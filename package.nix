@@ -1,5 +1,6 @@
-{ ps-pkgs, ... }:
+{ ps-pkgs, ps-pkgs-ns, ... }:
 with ps-pkgs;
+with ps-pkgs-ns.lovelaceAcademy;
 {
   version = "2.0.0";
   dependencies =
