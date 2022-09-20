@@ -1,10 +1,11 @@
 { ps-pkgs, ps-pkgs-ns, pkgs, ... }:
 let
-  bpPackage = fetchGit {
-    url = "https://github.com/serokell/nix-npm-buildpackage.git";
-    rev = "cab951dd024dd367511d48440de6f93664ee35aa";
+  npm2nixPkg = fetchGit {
+    url = "https://github.com/nix-community/npmlock2nix.git";
+    rev = "5c4f247688fc91d665df65f71c81e0726621aaa8";
   };
-  bp = pkgs.callPackage bpPackage { };
+  npm2nix = pkgs.callPackage npm2nixPkg { };
+  node_modules = npm2nix.node_modules { src = ./.; } + /node_modules;
 in
 with ps-pkgs;
 with ps-pkgs-ns.lovelaceAcademy;
@@ -95,9 +96,32 @@ with ps-pkgs-ns.lovelaceAcademy;
       untagged-union
       variant
     ];
-  foreign.Main.node_modules = bp.buildNpmPackage
-    {
-      src = ./.;
-      #npmBuild = "echo 'skipping build'";
-    };
+
+  # TODO: get all .js files and use their paths to generate foreigns
+  # grep -rl require src/{**/*,*}.js | xargs -I _ sh -c "S=_; grep module \${S/js/purs} | cut -d ' ' -f2"
+  foreign."BalanceTx.UtxoMinAda".node_modules = node_modules;
+  foreign."Deserialization.FromBytes".node_modules = node_modules;
+  foreign."Deserialization.Language".node_modules = node_modules;
+  foreign."Deserialization.Transaction".node_modules = node_modules;
+  foreign."Deserialization.UnspentOutput".node_modules = node_modules;
+  foreign."Deserialization.WitnessSet".node_modules = node_modules;
+  foreign."Plutip.PortCheck".node_modules = node_modules;
+  foreign."Plutip.Utils".node_modules = node_modules;
+  foreign."QueryM.UniqueId".node_modules = node_modules;
+  foreign."Serialization.Address".node_modules = node_modules;
+  foreign."Serialization.AuxiliaryData".node_modules = node_modules;
+  foreign."Serialization.BigInt".node_modules = node_modules;
+  foreign."Serialization.Hash".node_modules = node_modules;
+  foreign."Serialization.MinFee".node_modules = node_modules;
+  foreign."Serialization.NativeScript".node_modules = node_modules;
+  foreign."Serialization.PlutusData".node_modules = node_modules;
+  foreign."Serialization.PlutusScript".node_modules = node_modules;
+  foreign."Serialization.WitnessSet".node_modules = node_modules;
+  foreign."Types.BigNum".node_modules = node_modules;
+  foreign."Types.Int".node_modules = node_modules;
+  foreign."Types.TokenName".node_modules = node_modules;
+  foreign."Base64".node_modules = node_modules;
+  foreign."Hashing".node_modules = node_modules;
+  foreign."JsWebSocket".node_modules = node_modules;
+  foreign."Serialization".node_modules = node_modules;
 }
