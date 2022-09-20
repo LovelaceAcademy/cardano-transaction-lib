@@ -1,10 +1,10 @@
-{ ps-pkgs, ps-pkgs-ns, ... }:
-let npmlock2nix = (import
-  (fetchGit {
-    url = "https://github.com/nix-community/npmlock2nix.git";
-    rev = "5c4f247688fc91d665df65f71c81e0726621aaa8";
-  })
-  { });
+{ ps-pkgs, ps-pkgs-ns, pkgs, ... }:
+let
+  bpPackage = fetchGit {
+    url = "https://github.com/serokell/nix-npm-buildpackage.git";
+    rev = "cab951dd024dd367511d48440de6f93664ee35aa";
+  };
+  bp = pkgs.callPackage bpPackage { };
 in
 with ps-pkgs;
 with ps-pkgs-ns.lovelaceAcademy;
@@ -95,5 +95,9 @@ with ps-pkgs-ns.lovelaceAcademy;
       untagged-union
       variant
     ];
-  foreign.Main.node_modules = npmlock2nix.node_modules { src = ./.; } + /node_modules;
+  foreign.Main.node_modules = bp.buildNpmPackage
+    {
+      src = ./.;
+      #npmBuild = "echo 'skipping build'";
+    };
 }
