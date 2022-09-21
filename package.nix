@@ -1,4 +1,4 @@
-{ ps-pkgs, ps-pkgs-ns, pkgs, ... }:
+{ ps-pkgs-ns, pkgs, ... }:
 let
   npm2nixPkg = fetchGit {
     url = "https://github.com/nix-community/npmlock2nix.git";
@@ -7,22 +7,21 @@ let
   npm2nix = pkgs.callPackage npm2nixPkg { };
   node_modules = npm2nix.node_modules { src = ./.; } + /node_modules;
 in
-with ps-pkgs;
-with ps-pkgs-ns;
+with ps-pkgs-ns.lovelaceAcademy;
 {
   version = "2.0.0";
   dependencies =
     [
-      lovelaceAcademy.aeson
-      lovelaceAcademy.aeson-helpers
+      aeson
+      aeson-helpers
       aff
       aff-promise
       aff-retry
-      lovelaceAcademy.affjax
+      affjax
       arraybuffer-types
       arrays
       bifunctors
-      lovelaceAcademy.bigints
+      bigints
       checked-exceptions
       console
       const
@@ -43,14 +42,14 @@ with ps-pkgs-ns;
       identity
       integers
       js-date
-      lovelaceAcademy.lattice
+      lattice
       lists
       math
       maybe
-      lovelaceAcademy.medea
+      medea
       media-types
       monad-logger
-      lovelaceAcademy.mote
+      mote
       newtype
       node-buffer
       node-child-process
@@ -71,7 +70,7 @@ with ps-pkgs-ns;
       prelude
       profunctor
       profunctor-lenses
-      lovelaceAcademy.purescript-toppokki
+      purescript-toppokki
       quickcheck
       quickcheck-combinators
       quickcheck-laws
