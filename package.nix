@@ -70,7 +70,7 @@ with ps-pkgs-ns.lovelaceAcademy;
       prelude
       profunctor
       profunctor-lenses
-      purescript-toppokki
+      toppokki
       quickcheck
       quickcheck-combinators
       quickcheck-laws
