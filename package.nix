@@ -18,7 +18,7 @@ with ps-pkgs-ns;
       aff
       aff-promise
       aff-retry
-      affjax
+      lovelaceAcademy.affjax
       arraybuffer-types
       arrays
       bifunctors
