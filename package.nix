@@ -8,13 +8,13 @@ let
   node_modules = npm2nix.node_modules { src = ./.; } + /node_modules;
 in
 with ps-pkgs;
-with ps-pkgs-ns.lovelaceAcademy;
+with ps-pkgs-ns;
 {
   version = "2.0.0";
   dependencies =
     [
-      aeson
-      aeson-helpers
+      lovelaceAcademy.aeson
+      lovelaceAcademy.aeson-helpers
       aff
       aff-promise
       aff-retry
@@ -22,7 +22,7 @@ with ps-pkgs-ns.lovelaceAcademy;
       arraybuffer-types
       arrays
       bifunctors
-      bigints
+      lovelaceAcademy.bigints
       checked-exceptions
       console
       const
@@ -43,14 +43,14 @@ with ps-pkgs-ns.lovelaceAcademy;
       identity
       integers
       js-date
-      lattice
+      lovelaceAcademy.lattice
       lists
       math
       maybe
-      medea
+      lovelaceAcademy.medea
       media-types
       monad-logger
-      mote
+      lovelaceAcademy.mote
       newtype
       node-buffer
       node-child-process
@@ -71,7 +71,7 @@ with ps-pkgs-ns.lovelaceAcademy;
       prelude
       profunctor
       profunctor-lenses
-      purescript-toppokki
+      lovelaceAcademy.purescript-toppokki
       quickcheck
       quickcheck-combinators
       quickcheck-laws
