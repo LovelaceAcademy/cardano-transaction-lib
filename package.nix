@@ -10,6 +10,14 @@ in
 with ps-pkgs-ns.lovelaceAcademy;
 {
   version = "2.0.0";
+  src = [
+    "src/**/*.purs"
+    "test/**/*.purs"
+    "examples/**/*.purs"
+    "templates/ctl-scaffold/src/**/*.purs"
+    "templates/ctl-scaffold/test/**/*.purs"
+    "templates/ctl-scaffold/exe/**/*.purs"
+  ];
   dependencies =
     [
       aeson
