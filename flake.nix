@@ -28,6 +28,9 @@
       url = "github:justinwoo/easy-purescript-nix/d56c436a66ec2a8a93b309c83693cef1507dca7a";
       flake = false;
     };
+    purs-nix.url = "github:LovelaceAcademy/purs-nix";
+    npmlock2nix.url = "github:nix-community/npmlock2nix";
+    npmlock2nix.flake = false;
 
     # for the haskell server
     iohk-nix.url = "github:input-output-hk/iohk-nix";
@@ -138,6 +141,7 @@
         in
         rec {
           packages = {
+
             ctl-example-bundle-web = project.bundlePursProject {
               main = "Examples.ByUrl";
               entrypoint = "examples/index.js";
@@ -151,28 +155,28 @@
             docs = project.buildSearchablePursDocs {
               packageName = projectName;
             };
-          };
 
-          checks = {
-            ctl-plutip-test = project.runPlutipTest {
-              name = "ctl-plutip-test";
-              testMain = "Test.Plutip";
-              # After updating `PlutipConfig` this can be set for now:
-              # withCtlServer = false;
-              env = { OGMIOS_FIXTURES = "${ogmiosFixtures}"; };
+            checks = {
+              ctl-plutip-test = project.runPlutipTest {
+                name = "ctl-plutip-test";
+                testMain = "Test.Plutip";
+                # After updating `PlutipConfig` this can be set for now:
+                # withCtlServer = false;
+                env = { OGMIOS_FIXTURES = "${ogmiosFixtures}"; };
+              };
+              ctl-unit-test = project.runPursTest {
+                name = "ctl-unit-test";
+                testMain = "Ctl.Test.Unit";
+                env = { OGMIOS_FIXTURES = "${ogmiosFixtures}"; };
+              };
             };
-            ctl-unit-test = project.runPursTest {
-              name = "ctl-unit-test";
-              testMain = "Ctl.Test.Unit";
-              env = { OGMIOS_FIXTURES = "${ogmiosFixtures}"; };
-            };
-          };
 
-          devShell = project.devShell;
+            devShell = project.devShell;
 
-          apps = {
-            docs = project.launchSearchablePursDocs {
-              builtDocs = packages.docs;
+            apps = {
+              docs = project.launchSearchablePursDocs {
+                builtDocs = packages.docs;
+              };
             };
           };
         };
@@ -182,6 +186,143 @@
         inherit (pkgs) system;
         src = ./server;
       };
+
+      pursNixFor = system:
+        let
+          purs-nix = inputs.purs-nix { inherit system; };
+          pkgs = nixpkgsFor system;
+        in
+        rec {
+          default = lovelaceAcademy;
+          lovelaceAcademy = purs-nix.build {
+            name = "lovelaceAcademy.cardano-transaction-lib";
+            src.path = ./.;
+            info = {
+              version = "2.0.0";
+              dependencies =
+                with purs-nix.ps-pkgs-ns.lovelaceAcademy;
+                [
+                  aeson
+                  aeson-helpers
+                  aff
+                  aff-promise
+                  aff-retry
+                  affjax
+                  arraybuffer-types
+                  arrays
+                  bifunctors
+                  bigints
+                  checked-exceptions
+                  console
+                  const
+                  contravariant
+                  control
+                  datetime
+                  debug
+                  effect
+                  either
+                  encoding
+                  enums
+                  exceptions
+                  foldable-traversable
+                  foreign
+                  foreign-object
+                  heterogeneous
+                  http-methods
+                  identity
+                  integers
+                  js-date
+                  lattice
+                  lists
+                  math
+                  maybe
+                  medea
+                  media-types
+                  monad-logger
+                  mote
+                  newtype
+                  node-buffer
+                  node-child-process
+                  node-fs
+                  node-fs-aff
+                  node-path
+                  node-process
+                  node-streams
+                  nonempty
+                  now
+                  numbers
+                  optparse
+                  ordered-collections
+                  orders
+                  parallel
+                  partial
+                  posix-types
+                  prelude
+                  profunctor
+                  profunctor-lenses
+                  toppokki
+                  quickcheck
+                  quickcheck-combinators
+                  quickcheck-laws
+                  rationals
+                  record
+                  refs
+                  safe-coerce
+                  spec
+                  spec-quickcheck
+                  strings
+                  stringutils
+                  tailrec
+                  text-encoding
+                  these
+                  transformers
+                  tuples
+                  typelevel
+                  typelevel-prelude
+                  uint
+                  undefined
+                  unfoldable
+                  untagged-union
+                  variant
+                ];
+
+              # TODO: get all .js files and use their paths to generate foreigns
+              # grep -rl require src/{**/*,*}.js | xargs -I _ sh -c "S=_; grep module \${S/js/purs} | cut -d ' ' -f2"
+              foreign =
+                let
+                  ffi = [
+                    "BalanceTx.UtxoMinAda"
+                    "Deserialization.FromBytes"
+                    "Deserialization.Language"
+                    "Deserialization.Transaction"
+                    "Deserialization.UnspentOutput"
+                    "Deserialization.WitnessSet"
+                    "Plutip.PortCheck"
+                    "Plutip.Utils"
+                    "QueryM.UniqueId"
+                    "Serialization.Address"
+                    "Serialization.AuxiliaryData"
+                    "Serialization.BigInt"
+                    "Serialization.Hash"
+                    "Serialization.MinFee"
+                    "Serialization.NativeScript"
+                    "Serialization.PlutusData"
+                    "Serialization.PlutusScript"
+                    "Serialization.WitnessSet"
+                    "Types.BigNum"
+                    "Types.Int"
+                    "Types.TokenName"
+                    "Base64"
+                    "Hashing"
+                    "JsWebSocket"
+                    "Serialization"
+                  ];
+                  node_modules = pkgs.npmlock2nix.node_modules { src = ./.; } + /node_modules;
+                in
+                pkgs.lib.attrsets.genAttrs ffi (_: { inherit node_modules; });
+            };
+          };
+        };
     in
     {
       overlay = builtins.trace
@@ -198,6 +339,7 @@
         purescript = final: prev: {
           easy-ps = import inputs.easy-purescript-nix { pkgs = final; };
           purescriptProject = import ./nix { pkgs = final; };
+          npmlock2nix = import npmlock2nix { pkgs = final; };
         };
         # This is separate from the `runtime` overlay below because it is
         # optional (it's only required if using CTL's `applyArgs` effect).
@@ -285,6 +427,7 @@
       packages = perSystem (system:
         self.hsFlake.${system}.packages
         // (psProjectFor (nixpkgsFor system)).packages
+        // (pursNixFor system)
       );
 
       apps = perSystem (system:
