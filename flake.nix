@@ -441,7 +441,7 @@
         in
         (psProjectFor pkgs).apps // {
           inherit (self.hsFlake.${system}.apps) "ctl-server:exe:ctl-server";
-          ctl-runtime = pkgs.launchCtlRuntime { };
+          ctl-runtime = (pkgs.launchCtlRuntime { }).app;
           default = self.apps.${system}.ctl-runtime;
         });
 

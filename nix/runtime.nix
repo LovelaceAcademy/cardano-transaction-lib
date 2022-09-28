@@ -225,9 +225,11 @@ rec {
         inherit pkgs;
         modules = [ (buildCtlRuntime pkgs config) ];
       }).outPath;
-      script = pkgs.writeShellApplication {
+      script = pkgs.writeShellApplication rec {
         name = binPath;
         runtimeInputs = [ pkgs.arion pkgs.docker ];
+        # Exposes inputs to possible mkShell inputsFrom usage
+        buildInputs = runtimeInputs;
         text =
           ''
             ${pkgs.arion}/bin/arion --prebuilt-file ${prebuilt} up
@@ -235,8 +237,11 @@ rec {
       };
     in
     {
-      type = "app";
-      program = "${script}/bin/${binPath}";
+      inherit script;
+      app = {
+        type = "app";
+        program = "${script}/bin/${binPath}";
+      };
     };
 
 }
