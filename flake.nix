@@ -196,7 +196,12 @@
           default = lovelaceAcademy;
           lovelaceAcademy = purs-nix.build {
             name = "lovelaceAcademy.cardano-transaction-lib";
-            src.path = ./.;
+            src.path = pkgs.stdenv.mkDerivation {
+              name = "ctl";
+              src = ./.;
+              dontBuild = true;
+              installPhase = "mkdir -p $out/src && cp -r {src,examples,test} $out/src";
+            };
             info = {
               version = "2.0.0";
               dependencies =
