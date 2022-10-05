@@ -25,6 +25,10 @@ module.exports = {
     port: 4008,
   },
 
+  watchOptions: {
+    aggregateTimeout: 5000
+  },
+
   // we can add more entrypoints as needed
   entry: "./index.js",
 
@@ -47,7 +51,6 @@ module.exports = {
   },
 
   resolve: {
-    modules: [process.env.NODE_PATH],
     extensions: [".js"],
     fallback: {
       buffer: require.resolve("buffer/"),
@@ -79,7 +82,7 @@ module.exports = {
       debug: true,
     }),
     new HtmlWebpackPlugin({
-      title: "ctl-scaffold",
+      title: "la-scaffold",
       template: "./index.html",
       inject: false, // See stackoverflow.com/a/38292765/3067181
     }),

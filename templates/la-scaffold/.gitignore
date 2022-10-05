@@ -1,4 +1,5 @@
 /bower_components/
+/node_modules/
 /.pulp-cache/
 /output/
 /generated-docs/
@@ -7,13 +8,8 @@
 /.purs*
 /.psa*
 /.spago
-/.spago2nix*
-result
-result-*
-.envrc
-.direnv
-/node_modules
-/node_modules/
-.projectile
-/dist/
-output.js
+/result
+/dist
+/*.skey
+/*.vkey
+/*.addr

@@ -488,28 +488,28 @@
       );
 
       templates = {
-        default = self.templates.ctl-scaffold;
-        ctl-scaffold = {
-          path = ./templates/ctl-scaffold;
-          description = "A minimal CTL-based scaffold project";
+        default = self.templates.la-scaffold;
+        la-scaffold = {
+          path = ./templates/la-scaffold;
+          description = "A minimal LA-based scaffold project";
           welcomeText = ''
-            Welcome to your new CTL project!
+            Welcome to your new LA-CTL project!
 
-            To enter the Nix environment and start working on it, run `nix develop`
+            To enter the Nix environment and start working on it, run `nix develop`. Please make sure to use Nix v2.8 or later.
 
             Please also see our
 
-            - [Documentation](https://github.com/Plutonomicon/cardano-transaction-lib/tree/develop/doc)
+            - [Documentation](https://github.com/LovelaceAcademy/cardano-transaction-lib/tree/develop/doc)
 
-            - [Generated docs](https://plutonomicon.github.io/cardano-transaction-lib/)
+            - Generated docs: `npm run dev:docs`
 
-            - [Discord server]( https://discord.gg/c8kZWxzJ)
+            - [Discord server](https://discord.gg/fWP9eGdfZ8)
 
-            If you encounter problems and/or want to report a bug, you can open
-            an issue [here](https://github.com/Plutonomicon/cardano-transaction-lib/issues).
+            - [StackExchange](https://cardano.stackexchange.com) (:bulb: use the tag `lovelace-academy`)
+
+            If you encounter problems and/or want to report a bug, you reach us on our discord or report to upstream [here](https://github.com/Plutonomicon/cardano-transaction-lib/issues).
 
             Please search for existing issues beforehand!
-
           '';
         };
       };
