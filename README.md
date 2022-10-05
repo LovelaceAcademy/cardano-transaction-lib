@@ -90,3 +90,5 @@ You can find help, more information and ongoing discusion about the project here
 
 - Plutonomicon Discord: https://discord.gg/gGFdGaUE
 - #ctl channel at MLabs' Slack
+- LovelaceAcademy Discord: https://discord.gg/fWP9eGdfZ8
+- [StackExchange](https://cardano.stackexchange.com) (:bulb: use the tag `lovelace-academy`)
