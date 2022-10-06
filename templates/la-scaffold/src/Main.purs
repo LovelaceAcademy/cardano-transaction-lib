@@ -1,11 +1,17 @@
-module Scaffold (contract) where
+module Main (main) where
 
 import Contract.Prelude
 
-import Contract.Address as Contract.Address
-import Contract.Log as Contract.Log
-import Contract.Monad (Contract)
+import Contract.Address (ownPaymentPubKeyHash)
+import Contract.Log (logInfo')
+import Contract.Monad (Contract, launchAff_, runContract)
+import Contract.Config (testnetNamiConfig)
 
 contract :: Contract () Unit
-contract = Contract.Log.logInfo' <<< show =<<
-  Contract.Address.ownPaymentPubKeyHash
+contract = logInfo' <<< show =<< ownPaymentPubKeyHash
+
+main :: Effect Unit
+main = launchAff_
+  $ void
+  $ runContract testnetNamiConfig
+  $ contract
