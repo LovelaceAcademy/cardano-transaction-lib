@@ -291,6 +291,7 @@
                   variant
                 ];
 
+              # TODO: compare the bundle produced by purs-nix using embeded w/o embeded runtime deps to test if there are dups and decide if we keep the deps embeded
               # TODO: get all .js files and use their paths to generate foreigns
               # grep -rl require src/{**/*,*}.js | xargs -I _ sh -c "S=_; grep module \${S/js/purs} | cut -d ' ' -f2"
               foreign =
