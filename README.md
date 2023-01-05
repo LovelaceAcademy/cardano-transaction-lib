@@ -1,5 +1,7 @@
 # cardano-transaction-lib
 
+> Moved to [LovelaceAcademy/ctl-nix]([url](https://github.com/LovelaceAcademy/ctl-nix))
+
 [![Hercules-ci][herc badge]][herc link]
 [![Cachix Cache][cachix badge]][cachix link]
 
