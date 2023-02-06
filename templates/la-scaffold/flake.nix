@@ -95,4 +95,22 @@
               };
         }
       );
+
+  # --- Flake Local Nix Configuration ----------------------------
+  nixConfig = {
+    # This sets the flake to use nix cache.
+    # Nix should ask for permission before using it,
+    # but remove it here if you do not want it to.
+    extra-substituters = [
+      "https://cache.nixos.org"
+      "https://cache.iog.io"
+      "https://cardano-transaction-lib.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+      "cardano-transaction-lib.cachix.org-1:Fbil3zlpdx+NxCubSPmmrWw03LvklGaZf1T04l1H3vo="
+    ];
+    allow-import-from-derivation = "true";
+  };
 }
